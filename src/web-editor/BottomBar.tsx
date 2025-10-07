@@ -34,10 +34,15 @@ export const BottomBar: React.FC<BottomBarProps> = ({ activeTab }: BottomBarProp
   const [count, setCount] = React.useState<number>(2);
   const [resolution, setResolution] = React.useState<Resolution>(resolutionOptions[0] ?? '720p');
   const [duration, setDuration] = React.useState<Duration>(durationOptions[0] ?? '5s');
+  const [promptText, setPromptText] = React.useState<string>('');
 
   const isVideo = activeTab === 'video';
   const promptPlaceholder = isVideo ? 'Describe your video ...' : 'Describe your image ...';
   const modeLabel = isVideo ? 'Text to Video' : 'Text to Image';
+
+  React.useEffect(() => {
+    setPromptText('');
+  }, [activeTab]);
 
   const cycleValue = <Value extends string>(current: Value, values: readonly Value[]): Value => {
     if (values.length === 0) {
@@ -72,11 +77,20 @@ export const BottomBar: React.FC<BottomBarProps> = ({ activeTab }: BottomBarProp
     });
   };
 
+  const isPromptFilled = promptText.trim().length > 0;
+
   return (
     <div className="bg-[#151517] border border-subtle rounded-xl w-full shadow-md">
       <div className="rounded-xl overflow-hidden">
-        <div className="h-20 px-5 py-4 flex items-start">
-          <p className="text-sm text-[#787879]">{promptPlaceholder}</p>
+        <div className="min-h-[80px] px-5 py-4">
+          <textarea
+            aria-label={promptPlaceholder}
+            className="h-full w-full resize-none bg-transparent text-sm text-white placeholder-[#787879] focus:outline-none focus:ring-0"
+            onChange={(event) => setPromptText(event.target.value)}
+            placeholder={promptPlaceholder}
+            rows={3}
+            value={promptText}
+          />
         </div>
         <div className="px-2 py-2 flex items-center justify-between">
           <div className="flex items-center gap-1">
@@ -131,8 +145,11 @@ export const BottomBar: React.FC<BottomBarProps> = ({ activeTab }: BottomBarProp
               </button>
             ) : null}
           </div>
-          <button type="button" className="bg-[#1e1e20] rounded w-11 h-11 flex items-center justify-center">
-            <img alt="send" src={imgSend} className="size-[18px]" />
+          <button
+            type="button"
+            className={`${isPromptFilled ? 'bg-white text-black' : 'bg-[#1e1e20] text-[#787879]'} rounded w-11 h-11 flex items-center justify-center`}
+          >
+            <img alt="send" src={imgSend} className="size-[18px]" style={{ filter: isPromptFilled ? 'brightness(0) saturate(100%) invert(7%) sepia(3%) saturate(2366%) hue-rotate(198deg) brightness(95%) contrast(93%)' : undefined }} />
           </button>
         </div>
       </div>

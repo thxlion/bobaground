@@ -1,5 +1,6 @@
 import React from 'react';
 import map from 'lodash/map';
+import shuffle from 'lodash/shuffle';
 
 const BASE_COLUMN_WIDTH = 375;
 const BASE_COLUMN_GAP = 4;
@@ -146,7 +147,8 @@ export const ExploreGrid: React.FC = () => {
     const cards: LayoutCard[] = [];
 
     for (let pageIndex = 0; pageIndex < pageCount; pageIndex += 1) {
-      map(exploreCardDefinitions, ({ height, id, left }: ExploreCardDefinition) => {
+      const pageCards = shuffle(exploreCardDefinitions);
+      map(pageCards, ({ height, id, left }: ExploreCardDefinition, cardIndex: number) => {
         const columnIndex = Math.min(
           COLUMN_COUNT - 1,
           Math.max(0, Math.round(left / (BASE_COLUMN_WIDTH + BASE_COLUMN_GAP))),
@@ -158,7 +160,7 @@ export const ExploreGrid: React.FC = () => {
 
         cards.push({
           height: cardHeight,
-          key: `${pageIndex}-${id}`,
+          key: `${pageIndex}-${cardIndex}-${id}`,
           left: cardLeft,
           top: cardTop,
           width: columnWidth,

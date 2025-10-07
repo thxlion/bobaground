@@ -15,6 +15,9 @@ export default {
       borderColor: {
         subtle: 'rgba(255,255,255,0.08)',
       },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
     },
   },
   plugins: [],
