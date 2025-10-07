@@ -1,12 +1,14 @@
 import React from 'react';
-import { TopNav } from './TopNav';
 import { BottomBar } from './BottomBar';
+import { ExploreGrid } from './ExploreGrid';
+import { TopNav } from './TopNav';
 
 /**
  * App root layout that mirrors the canvas frame in Figma.
- * It composes a top navigation, a full-viewport dark canvas,
- * and a bottom prompt bar. The canvas is intentionally empty,
- * acting as a stage for future content.
+ * It composes the Explore navigation, renders the masonry grid,
+ * and anchors the composer bottom bar on top of the canvas.
+ *
+ * @returns React element containing the full editor shell.
  */
 export const App: React.FC = () => {
   return (
@@ -14,12 +16,11 @@ export const App: React.FC = () => {
       <header className="h-16">
         <TopNav />
       </header>
-      <main className="relative flex-1">
-        {/* Canvas area */}
-        <div className="absolute inset-0" />
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true" />
-        <div className="pointer-events-none absolute inset-0" aria-hidden="true" />
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-full max-w-[692px] px-4 sm:px-0">
+      <main className="relative flex-1 overflow-hidden">
+        <div className="absolute inset-0 flex justify-center">
+          <ExploreGrid />
+        </div>
+        <div className="absolute bottom-8 left-1/2 w-full max-w-[692px] -translate-x-1/2 px-4 sm:px-0">
           <BottomBar />
         </div>
       </main>

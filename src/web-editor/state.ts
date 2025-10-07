@@ -7,7 +7,7 @@ export interface EditorState {
 }
 
 export const defaultEditorState: EditorState = {
-  activeTab: 'image',
+  activeTab: 'explore',
   aspectRatio: '16:9',
   imageCount: 2,
 };
